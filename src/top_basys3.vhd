@@ -1,4 +1,4 @@
-------------------------------------------------------------------------------
+--+----------------------------------------------------------------------------
 --| 
 --| COPYRIGHT 2025 United States Air Force Academy All rights reserved.
 --| 
@@ -53,7 +53,7 @@
 --|    sm_<state machine type>  = state machine type definition
 --|    s_<signal name>          = state name
 --|
---+----------------------------------------------------------------------------|
+--+----------------------------------------------------------------------------
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -94,10 +94,10 @@ begin
     -- Instantiate seven-segment decoder WITHOUT a label
     --------------------------------------------------------------------
     sevenseg_decoder
-    port map(
+        port map(
             i_Hex   => sw,
             o_seg_n => w_seg_n
-    );
+        );
 
     -- Connect decoder output to the actual segments
     seg <= w_seg_n;
