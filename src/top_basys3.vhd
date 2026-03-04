@@ -1,4 +1,4 @@
---+----------------------------------------------------------------------------
+------------------------------------------------------------------------------
 --| 
 --| COPYRIGHT 2025 United States Air Force Academy All rights reserved.
 --| 
@@ -53,7 +53,7 @@
 --|    sm_<state machine type>  = state machine type definition
 --|    s_<signal name>          = state name
 --|
---+----------------------------------------------------------------------------
+--+----------------------------------------------------------------------------|
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -91,13 +91,13 @@ architecture top_basys3_arch of top_basys3 is
 begin
 
     --------------------------------------------------------------------
-    -- Instantiate seven-segment decoder
+    -- Instantiate seven-segment decoder WITHOUT a label
     --------------------------------------------------------------------
-    U_sevenseg_decoder : sevenseg_decoder
-        port map(
+    sevenseg_decoder
+    port map(
             i_Hex   => sw,
             o_seg_n => w_seg_n
-        );
+    );
 
     -- Connect decoder output to the actual segments
     seg <= w_seg_n;
