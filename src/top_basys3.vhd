@@ -59,43 +59,52 @@ library ieee;
   use ieee.numeric_std.all;
 
 
+
 entity top_basys3 is
-	port(
-		-- 7-segment display segments (cathodes CG ... CA)
-		seg		:	out std_logic_vector(6 downto 0);  -- seg(6) = CG, seg(0) = CA
+    port(
+        -- 7-segment display segments (cathodes CG ... CA)
+        seg : out std_logic_vector(6 downto 0);  -- seg(6) = CG, seg(0) = CA
 
-		-- 7-segment display active-low enables (anodes)
-		an      :	out std_logic_vector(3 downto 0);
+        -- 7-segment display active-low enables (anodes)
+        an  : out std_logic_vector(3 downto 0);
 
-		-- Switches
-		sw		:	in  std_logic_vector(3 downto 0);
-		
-		-- Buttons
-		btnC	:	in	std_logic
-
-	);
+        -- Switches
+        sw  : in  std_logic_vector(3 downto 0);
+        
+        -- Buttons
+        btnC : in std_logic
+    );
 end top_basys3;
 
 architecture top_basys3_arch of top_basys3 is 
-	
-  -- declare the component of your top-level design
 
+    -- Component declaration for seven-segment decoder
+    component sevenseg_decoder is
+        port(
+            i_Hex   : in  std_logic_vector(3 downto 0);
+            o_seg_n : out std_logic_vector(6 downto 0)
+        );
+    end component;
 
-  -- create wire to connect button to 7SD enable (active-low)
+    -- Internal signal to enable 7-segment display (active low)
+    signal w_7SD_EN_n : std_logic;
 
-  
 begin
-	-- PORT MAPS ----------------------------------------
+    -------------------------------------------------------------------
+    -- Active-low 7-segment enable logic
+    -- Display 7SD 0 only when btnC is pressed
+    -------------------------------------------------------------------
+    w_7SD_EN_n <= not btnC;          -- btnC is active high, convert to active low
+    an <= (0 => w_7SD_EN_n, others => '1');  -- only 7SD0 is enabled
 
-	--	Port map: wire your component up to the switches and seven-segment display cathodes
-	-----------------------------------------------------	
-	
-	
-	-- CONCURRENT STATEMENTS ----------------------------
-	
-	-- wire up active-low 7SD anode (active low) to button (active-high)
-	-- display 7SD 0 only when button pushed
-	-- other 7SD are kept off
-	-----------------------------------------------------
-	
+    -------------------------------------------------------------------
+    -- Instantiate the seven-segment decoder
+    -- Map switches to hex input and decoder output to segment cathodes
+    -------------------------------------------------------------------
+    U_sevenseg_decoder: sevenseg_decoder
+        port map(
+            i_Hex   => sw,
+            o_seg_n => seg
+        );
+
 end top_basys3_arch;
