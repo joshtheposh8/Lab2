@@ -54,11 +54,10 @@
 --|    s_<signal name>          = state name
 --|
 --+----------------------------------------------------------------------------
+
 library ieee;
-  use ieee.std_logic_1164.all;
-  use ieee.numeric_std.all;
-
-
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity top_basys3 is
     port(
@@ -70,7 +69,7 @@ entity top_basys3 is
 
         -- Switches
         sw  : in  std_logic_vector(3 downto 0);
-        
+
         -- Buttons
         btnC : in std_logic
     );
@@ -78,7 +77,7 @@ end top_basys3;
 
 architecture top_basys3_arch of top_basys3 is 
 
-    -- Component declaration for seven-segment decoder
+    -- Declare the seven-segment decoder component
     component sevenseg_decoder is
         port(
             i_Hex   : in  std_logic_vector(3 downto 0);
@@ -86,25 +85,28 @@ architecture top_basys3_arch of top_basys3 is
         );
     end component;
 
-    -- Internal signal to enable 7-segment display (active low)
-    signal w_7SD_EN_n : std_logic;
+    -- Internal wire to connect decoder output
+    signal w_seg_n : std_logic_vector(6 downto 0);
 
 begin
-    -------------------------------------------------------------------
-    -- Active-low 7-segment enable logic
-    -- Display 7SD 0 only when btnC is pressed
-    -------------------------------------------------------------------
-    w_7SD_EN_n <= not btnC;          -- btnC is active high, convert to active low
-    an <= (0 => w_7SD_EN_n, others => '1');  -- only 7SD0 is enabled
 
-    -------------------------------------------------------------------
-    -- Instantiate the seven-segment decoder
-    -- Map switches to hex input and decoder output to segment cathodes
-    -------------------------------------------------------------------
-    U_sevenseg_decoder: sevenseg_decoder
+    --------------------------------------------------------------------
+    -- Instantiate seven-segment decoder
+    --------------------------------------------------------------------
+    U_sevenseg_decoder : sevenseg_decoder
         port map(
             i_Hex   => sw,
-            o_seg_n => seg
+            o_seg_n => w_seg_n
         );
+
+    -- Connect decoder output to the actual segments
+    seg <= w_seg_n;
+
+    --------------------------------------------------------------------
+    -- Anode control (active-low)
+    -- Only enable digit 0 when btnC is pressed
+    --------------------------------------------------------------------
+    an(0) <= not btnC;             -- digit 0 ON when btnC = '1'
+    an(3 downto 1) <= (others => '1');  -- all other digits OFF
 
 end top_basys3_arch;
