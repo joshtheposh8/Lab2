@@ -93,20 +93,16 @@ begin
     --------------------------------------------------------------------
     -- Instantiate seven-segment decoder WITHOUT a label
     --------------------------------------------------------------------
-    sevenseg_decoder
-        port map(
-            i_Hex   => sw,
-            o_seg_n => w_seg_n
-        );
+    uut_decoder: sevenseg_decoder
+    port map(
+        i_Hex   => sw,
+        o_seg_n => w_seg_n
+    );
 
-    -- Connect decoder output to the actual segments
-    seg <= w_seg_n;
+-- Connect to 7-segment display
+seg <= w_seg_n;
 
-    --------------------------------------------------------------------
-    -- Anode control (active-low)
-    -- Only enable digit 0 when btnC is pressed
-    --------------------------------------------------------------------
-    an(0) <= not btnC;             -- digit 0 ON when btnC = '1'
-    an(3 downto 1) <= (others => '1');  -- all other digits OFF
-
+-- Active-low anodes
+an(0) <= not btnC;             
+an(3 downto 1) <= (others => '1');
 end top_basys3_arch;
