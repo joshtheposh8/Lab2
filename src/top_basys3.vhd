@@ -93,16 +93,16 @@ begin
     --------------------------------------------------------------------
     -- Instantiate seven-segment decoder WITHOUT a label
     --------------------------------------------------------------------
-    uut_decoder: sevenseg_decoder
-    port map(
-        i_Hex   => sw,
-        o_seg_n => w_seg_n
-    );
+decoder_inst: sevenseg_decoder
+port map(
+    i_Hex   => sw,
+    o_seg_n => w_seg_n
+);
 
 -- Connect to 7-segment display
 seg <= w_seg_n;
 
 -- Active-low anodes
-an(0) <= not btnC;             
+an(0) <= not btnC;
 an(3 downto 1) <= (others => '1');
 end top_basys3_arch;
