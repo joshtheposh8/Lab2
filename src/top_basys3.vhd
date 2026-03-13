@@ -78,31 +78,31 @@ end top_basys3;
 architecture top_basys3_arch of top_basys3 is 
 
     -- Declare the seven-segment decoder component
-    component sevenseg_decoder is
-        port(
-            i_Hex   : in  std_logic_vector(3 downto 0);
+    component sevenseg_decoder
+        Port(
+            i_hex   : in  std_logic_vector(3 downto 0);
             o_seg_n : out std_logic_vector(6 downto 0)
         );
     end component;
 
     -- Internal wire to connect decoder output
-    signal w_seg_n : std_logic_vector(6 downto 0);
+    signal w_seg_n : std_logic;
 
 begin
 
     --------------------------------------------------------------------
     -- Instantiate seven-segment decoder WITHOUT a label
     --------------------------------------------------------------------
-decoder_inst: sevenseg_decoder
+sevenseg_decoder_inst: sevenseg_decoder
 port map(
-    i_Hex   => sw,
-    o_seg_n => w_seg_n
+    i_hex   => sw,
+    o_seg_n=>seg
 );
 
 -- Connect to 7-segment display
-seg <= w_seg_n;
+w_seg_n <= not btnC;
 
 -- Active-low anodes
-an(0) <= not btnC;
+an(0) <= w_seg_n;
 an(3 downto 1) <= (others => '1');
 end top_basys3_arch;
