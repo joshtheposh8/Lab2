@@ -39,10 +39,9 @@ begin
     
     i_hex <= x"0"; wait for 10 ns;
     assert o_seg_n="1000000" report "Error on 0" severity failure;
-    
+    wait;
     end process;
-    
-   end behavorial;
+end behavorial;
 
 
 
