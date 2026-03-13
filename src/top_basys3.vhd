@@ -93,11 +93,12 @@ begin
     --------------------------------------------------------------------
     -- Instantiate seven-segment decoder WITHOUT a label
     --------------------------------------------------------------------
-decoder_inst: entity work.sevenseg_decoder
+decoder_inst: sevenseg_decoder
 port map(
     i_Hex   => sw,
     o_seg_n => w_seg_n
 );
+
 -- Connect to 7-segment display
 seg <= w_seg_n;
 
